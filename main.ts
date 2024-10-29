@@ -21,7 +21,6 @@ input.onButtonPressed(Button.A, function () {
         PingUnit.Centimeters
     )
 
-    // if distance < 10 cm
     if (distanceOfObject < 10) {
         basic.clearScreen()
         neopixelStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
