@@ -1,65 +1,51 @@
+
 /* Copyright (c) 2020 MTHS All rights reserved
 *
 * Created by: Mohammed Afheej
 * Created on: Oct 2024
-* This program uses the distance sensor and save the current distance in cm
+* This program uses the distance sensor to light up a light 0
 */
 
-// defining variables
-let distanceOfObject: number = 0
+// variables
+let distanceToObject: number = 0
 let neopixelStrip: neopixel.Strip = null
 
-// show happy face (-__-)
+// setup
+basic.clearScreen()
+neopixelStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
+neopixelStrip.show()
 basic.showIcon(IconNames.Happy)
 
-// calculating the distacne
+// find distance from sonar
+basic.clearScreen()
 input.onButtonPressed(Button.A, function () {
-
-    distanceOfObject = sonar.ping(
+    distanceToObject = sonar.ping(
         DigitalPin.P1,
         DigitalPin.P2,
         PingUnit.Centimeters
     )
+    basic.showNumber(distanceToObject)
 
-    if (distanceOfObject < 10) {
-        basic.clearScreen()
-        neopixelStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
-        neopixelStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-        neopixelStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Red))
-        neopixelStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.Red))
-        neopixelStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Red))
+    // change neoPixel color based on distance
+    if (distanceToObject < 10) {
+        neopixelStrip.showColor(neopixel.colors(NeoPixelColors.Red))
         neopixelStrip.show()
-        basic.showNumber(distanceOfObject)
-
-        //turn off the neopixel
-        pause(2000)
-        neopixelStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Black))
+    } else {
+        neopixelStrip.showColor(neopixel.colors(NeoPixelColors.Green))
         neopixelStrip.show()
     }
 
-    // if distance >= 10
-    else {
-        neopixelStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
-        neopixelStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Green))
-        neopixelStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Green))
-        neopixelStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.Green))
-        neopixelStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-        neopixelStrip.show()
-        basic.showNumber(distanceOfObject)
+    basic.showIcon(IconNames.Happy)
+})
 
-        //turn off the neopixel
-        pause(2000)
-        neopixelStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Black))
-        neopixelStrip.show()
-    }
+//reset
+input.onButtonPressed(Button.B, function () {
+    neopixelStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
+    neopixelStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Black))
+    neopixelStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
+    neopixelStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Black))
+    neopixelStrip.setPixelColor(4, neopixel.colors(NeoPixelColors.Black))
+    neopixelStrip.show()
 
-    //clear screen and show happy face
-    basic.clearScreen()
     basic.showIcon(IconNames.Happy)
 })
